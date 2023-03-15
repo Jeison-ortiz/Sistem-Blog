@@ -12,7 +12,7 @@ import jakarta.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "publications",uniqueConstraints = {@UniqueConstraint(columnNames = {"title"})})
-public class publications {
+public class Publications {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +24,7 @@ public class publications {
 	@Column(name = "description", nullable = false)
 	private String description;
 	
-	public publications(Long id, String title, String description, String content) {
+	public Publications(Long id, String title, String description, String content) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -32,7 +32,7 @@ public class publications {
 		this.content = content;
 	}
 
-	public publications() {
+	public Publications() {
 		super();
 	}
 
