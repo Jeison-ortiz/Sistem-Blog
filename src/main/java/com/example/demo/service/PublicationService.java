@@ -9,4 +9,11 @@ public interface PublicationService {
 	public PublicationDTO createPublication(PublicationDTO publicationDTO);
 	
 	public List<PublicationDTO> getAllPublication();
+	
+	public PublicationDTO getPublicationById(long id);
+	
+	public PublicationDTO uptadePublication(PublicationDTO publicationDTO, long id);
+	
+	public void deletePublication(long id);
+	
 }
