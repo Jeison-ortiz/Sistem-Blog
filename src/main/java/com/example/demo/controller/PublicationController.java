@@ -1,7 +1,5 @@
 package com.example.demo.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.PublicationDTO;
+import com.example.demo.dto.PublicationResponse;
 import com.example.demo.service.PublicationService;
+import com.example.demo.util.AppConstans;
 
 @RestController
 @RequestMapping("/api/publication")
@@ -31,10 +31,12 @@ public class PublicationController {
 	}
 
 	@GetMapping("/getAll")
-	public List<PublicationDTO> getAllPublications(
-			@RequestParam(value = "pageNumber", defaultValue = "0", required = false) int numberOfPage,
-			@RequestParam(value = "pageSize", defaultValue = "10", required = false) int sizeOfPage){
-		return publicationService.getAllPublication(numberOfPage,sizeOfPage);
+	public PublicationResponse getAllPublications(
+			@RequestParam(value = "pageNumber", defaultValue = AppConstans.NUMBER_OF_PAGE_FOR_DEFAULT, required = false) int numberOfPage,
+			@RequestParam(value = "pageSize", defaultValue = AppConstans.PAGE_SIZE_FOR_DEFAULT, required = false) int sizeOfPage,
+			@RequestParam(value = "sortBy", defaultValue = AppConstans.ORDER_BY_DEFAULT, required = false) String sortBy,
+			@RequestParam(value = "sortDir", defaultValue = AppConstans.ORDER_DIRECTION_FOR_DEFAULT, required = false) String sortDir){
+		return publicationService.getAllPublication(numberOfPage,sizeOfPage, sortBy, sortDir);
 	}
 
 	@PostMapping("/save")

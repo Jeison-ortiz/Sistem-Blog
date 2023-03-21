@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.PublicationDTO;
+import com.example.demo.dto.PublicationResponse;
 import com.example.demo.entities.Publication;
 import com.example.demo.exceptions.ResourceNotFoundException;
 import com.example.demo.repository.PublicationRepo;
@@ -33,12 +35,23 @@ public class PublicationServiceImpl implements PublicationService{
 	}
 
 	@Override
-	public List<PublicationDTO> getAllPublication(int numberOfPage, int sizeOfPage) {
-		Pageable pageable = PageRequest.of(numberOfPage,sizeOfPage);
+	public PublicationResponse getAllPublication(int numberOfPage, int sizeOfPage, String orderBy, String sortDir) {
+		Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name())?Sort.by(orderBy).ascending():Sort.by(orderBy).descending();
+		Pageable pageable = PageRequest.of(numberOfPage,sizeOfPage, sort);
 		Page<Publication> publications = publicationRepo.findAll(pageable);
 		List<Publication> Listpublications = publications.getContent();
 //		List<Publication> Listpublications = publicationRepo.findAll();
-		return Listpublications.stream().map(publication -> mapEntityToDTO(publication)).collect(Collectors.toList());
+		List<PublicationDTO> content = Listpublications.stream().map(publication -> mapEntityToDTO(publication)).collect(Collectors.toList());
+		
+		PublicationResponse publicationResponse = new PublicationResponse();
+		publicationResponse.setContent(content);
+		publicationResponse.setNumberPage(publications.getNumber());
+		publicationResponse.setPageSize(publications.getSize());
+		publicationResponse.setTotalElements(publications.getTotalElements());
+		publicationResponse.setTotalPages(publications.getTotalPages());
+		publicationResponse.setLast(publications.isLast());
+		
+		return publicationResponse;
 	}
 	
 	@Override
