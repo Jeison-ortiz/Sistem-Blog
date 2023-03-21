@@ -1,7 +1,5 @@
 package com.example.demo.entities;
 
-import org.hibernate.dialect.ColumnAliasExtractor;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
