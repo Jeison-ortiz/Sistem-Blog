@@ -1,5 +1,9 @@
 package com.example.demo.dto;
 
+import java.util.Set;
+
+import com.example.demo.entities.Comment;
+
 public class PublicationDTO {
 	
 	private Long id;
@@ -9,6 +13,8 @@ public class PublicationDTO {
 	private String description;
 	
 	private String content;
+	
+	private Set<Comment> comments;
 	
 	public PublicationDTO(Long id, String title, String description, String content) {
 		super();
@@ -53,4 +59,13 @@ public class PublicationDTO {
 	public void setContent(String content) {
 		this.content = content;
 	}
+
+	public Set<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(Set<Comment> comments) {
+		this.comments = comments;
+	}
+
 }
