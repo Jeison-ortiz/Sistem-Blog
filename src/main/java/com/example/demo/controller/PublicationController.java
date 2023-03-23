@@ -18,6 +18,8 @@ import com.example.demo.dto.PublicationResponse;
 import com.example.demo.service.PublicationService;
 import com.example.demo.util.AppConstans;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/publication")
 public class PublicationController {
@@ -40,7 +42,7 @@ public class PublicationController {
 	}
 
 	@PostMapping("/save")
-	public ResponseEntity<PublicationDTO> savePublication(@RequestBody PublicationDTO publicationDTO) {
+	public ResponseEntity<PublicationDTO> savePublication(@Valid @RequestBody PublicationDTO publicationDTO) {
 		return new ResponseEntity<>(publicationService.createPublication(publicationDTO), HttpStatus.CREATED);
 	}
 

@@ -4,14 +4,22 @@ import java.util.Set;
 
 import com.example.demo.entities.Comment;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
+
 public class PublicationDTO {
 	
 	private Long id;
 	
+	@NotEmpty
+	@Size(min = 2, message = "El titulo debe tener al menos dos caracteres")
 	private String title;
 	
+	@NotEmpty
+	@Size(min = 10, message = "la descripción debe tener al menos 10 caracteres")
 	private String description;
 	
+	@NotEmpty
 	private String content;
 	
 	private Set<Comment> comments;
