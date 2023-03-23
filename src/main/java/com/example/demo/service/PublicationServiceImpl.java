@@ -3,12 +3,14 @@ package com.example.demo.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.ModelMap;
 
 import com.example.demo.dto.PublicationDTO;
 import com.example.demo.dto.PublicationResponse;
@@ -18,6 +20,9 @@ import com.example.demo.repository.PublicationRepo;
 
 @Service
 public class PublicationServiceImpl implements PublicationService{
+	
+	@Autowired
+	ModelMapper modelMapper;
 	
 	@Autowired
 	private PublicationRepo publicationRepo;
@@ -77,20 +82,12 @@ public class PublicationServiceImpl implements PublicationService{
 	}
 	
 	private PublicationDTO mapEntityToDTO(Publication publication) {
-		PublicationDTO publicationDTO = new PublicationDTO();
-		publicationDTO.setId(publication.getId());
-		publicationDTO.setTitle(publication.getTitle());
-		publicationDTO.setContent(publication.getContent());
-		publicationDTO.setDescription(publication.getDescription());
+		PublicationDTO publicationDTO = modelMapper.map(publication, PublicationDTO.class);
 		return publicationDTO;
 	}
 	
 	private Publication mapDTOToEntity(PublicationDTO publicationDTO) {
-		Publication publication = new Publication();
-		publication.setId(publicationDTO.getId());
-		publication.setTitle(publicationDTO.getTitle());
-		publication.setContent(publicationDTO.getContent());
-		publication.setDescription(publicationDTO.getDescription());
+		Publication publication = modelMapper.map(publicationDTO, Publication.class);
 		return publication;
 	}
 

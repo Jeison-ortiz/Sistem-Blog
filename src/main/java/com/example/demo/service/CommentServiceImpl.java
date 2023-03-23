@@ -3,6 +3,7 @@ package com.example.demo.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,9 @@ import com.example.demo.repository.CommentRepositiry;
 @Service
 public class CommentServiceImpl implements CommentService {
 
+	@Autowired
+	ModelMapper modelMapper;
+	
 	@Autowired
 	private CommentRepositiry commentRepository;
 
@@ -74,22 +78,30 @@ public class CommentServiceImpl implements CommentService {
 
 		return mapperCommentEntityToCommentDTO(commentUpdate);
 	}
+	
+	@Override
+	public void deleteComment(Long publicationId, Long commentId) {
+		Publication publication = publicationRepo.findById(publicationId)
+				.orElseThrow(() -> new ResourceNotFoundException("Publication", "Id", publicationId));
+
+		Comment comment = commentRepository.findById(commentId)
+				.orElseThrow(() -> new ResourceNotFoundException("Comment", "Id", commentId));
+		
+		if (!comment.getPublication().getId().equals(publication.getId())) {
+			throw new BlogAppException(HttpStatus.BAD_REQUEST, "El comentario no pertenece a la publicación");
+		}
+		
+		commentRepository.delete(comment);
+		
+	}
 
 	private CommentDTO mapperCommentEntityToCommentDTO(Comment comment) {
-		CommentDTO commentDTO = new CommentDTO();
-		commentDTO.setId(comment.getId());
-		commentDTO.setName(comment.getName());
-		commentDTO.setEmail(comment.getEmail());
-		commentDTO.setBody(comment.getBody());
+		CommentDTO commentDTO = modelMapper.map(comment, CommentDTO.class);
 		return commentDTO;
 	}
 
 	private Comment mapperCommentDTOToCommentEntity(CommentDTO commentDTO) {
-		Comment comment = new Comment();
-		comment.setId(commentDTO.getId());
-		comment.setName(commentDTO.getName());
-		comment.setEmail(commentDTO.getEmail());
-		comment.setBody(commentDTO.getBody());
+		Comment comment = modelMapper.map(commentDTO,Comment.class);
 		return comment;
 	}
 
