@@ -28,13 +28,11 @@ public class PublicationController {
 	@Autowired
 	private PublicationService publicationService;
 
-	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/getById/{id}")
 	public ResponseEntity<PublicationDTO> getPublicationById(@PathVariable(name = "id") long id) {
 		return ResponseEntity.ok(publicationService.getPublicationById(id));
 	}
 
-	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/getAll")
 	public PublicationResponse getAllPublications(
 			@RequestParam(value = "pageNumber", defaultValue = AppConstans.NUMBER_OF_PAGE_FOR_DEFAULT, required = false) int numberOfPage,
@@ -58,6 +56,7 @@ public class PublicationController {
 		return new ResponseEntity<>(publicationUpdate, HttpStatus.OK);
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<String> deletePublication(@PathVariable(name = "id") long id) {
 		publicationService.deletePublication(id);
