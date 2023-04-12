@@ -35,8 +35,7 @@ public class SecurityConfig {
 		.authorizeHttpRequests()
             .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
             .requestMatchers(HttpMethod.POST,"/api/auth/**").permitAll()
-            .requestMatchers(HttpMethod.POST, "/api/**").hasRole("ADMIN")
-            
+            .requestMatchers(HttpMethod.POST, "/api/**").hasRole("ADMIN")  
             .anyRequest().authenticated()
             .and()
             .httpBasic();   
@@ -52,12 +51,6 @@ public class SecurityConfig {
     AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
 		return authenticationConfiguration.getAuthenticationManager();
 	}
-
-//	@Bean
-//	public AuthenticationManager authenticationManagerBean() throws Exception {
-//	    return authenticationManagerBean();
-//	}
-//	
 
 //	@Bean
 //	public UserDetailsService userDetailsService() {
